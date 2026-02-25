@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from crewai_tools import tools
+from langchain_community.document_loaders import PyPDFLoader
 from crewai_tools.tools.serper_dev_tool import SerperDevTool
 
 ## Creating search tool
@@ -11,7 +12,7 @@ search_tool = SerperDevTool()
 
 ## Creating custom pdf reader tool
 class FinancialDocumentTool():
-    async def read_data_tool(path='data/sample.pdf'):
+    async def read_data_tool(path='data/TSLA-Q2-2025-Update.pdf'):
         """Tool to read data from a pdf file from a path
 
         Args:
@@ -21,7 +22,7 @@ class FinancialDocumentTool():
             str: Full Financial Document file
         """
         
-        docs = Pdf(file_path=path).load()
+       docs = PyPDFLoader(path).load()
 
         full_report = ""
         for data in docs:
