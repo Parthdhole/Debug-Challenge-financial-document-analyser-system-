@@ -9,7 +9,10 @@ from crewai.agents import Agent
 from tools import search_tool, FinancialDocumentTool
 
 ### Loading LLM
-llm = llm
+llm = LLM(
+    model="gpt-4o",
+    temperature=0.0
+)
 
 # Creating an Experienced Financial Analyst agent
 financial_analyst=Agent(
