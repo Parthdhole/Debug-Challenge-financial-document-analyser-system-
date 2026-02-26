@@ -5,19 +5,20 @@ import asyncio
 
 from crewai import Crew, Process
 from agents import financial_analyst
-from task import analyze_financial_document
+from task import analyze_financial_document as analyze_financial_document_task
+from tools import FinancialDocumentTool
 
 app = FastAPI(title="Financial Document Analyzer")
 
-def run_crew(query: str, file_path: str="data/sample.pdf"):
-    """To run the whole crew"""
+def run_crew(query: str, document_text: str):
+    """Run the crew on the given query and document text."""
     financial_crew = Crew(
         agents=[financial_analyst],
-        tasks=[analyze_financial_document],
+        tasks=[analyze_financial_document_task],
         process=Process.sequential,
     )
     
-    result = financial_crew.kickoff({'query': query})
+    result = financial_crew.kickoff({'query': query, 'document_text': document_text})
     return result
 
 @app.get("/")
@@ -26,7 +27,7 @@ async def root():
     return {"message": "Financial Document Analyzer API is running"}
 
 @app.post("/analyze")
-async def analyze_financial_document(
+async def analyze_financial_document_endpoint(
     file: UploadFile = File(...),
     query: str = Form(default="Analyze this financial document for investment insights")
 ):
@@ -45,11 +46,14 @@ async def analyze_financial_document(
             f.write(content)
         
         # Validate query
-        if query=="" or query is None:
+        if query == "" or query is None:
             query = "Analyze this financial document for investment insights"
             
+        # Read and process the financial document text
+        document_text = await FinancialDocumentTool.read_data_tool(file_path)
+
         # Process the financial document with all analysts
-        response = run_crew(query=query.strip(), file_path=file_path)
+        response = run_crew(query=query.strip(), document_text=document_text)
         
         return {
             "status": "success",

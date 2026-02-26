@@ -3,38 +3,35 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from crewai_tools import tools
-from langchain_community.document_loaders import PyPDFLoader
-from crewai_tools.tools.serper_dev_tool import SerperDevTool
+from crewai_tools import SerperDevTool
+import pdfplumber
 
 ## Creating search tool
 search_tool = SerperDevTool()
 
 ## Creating custom pdf reader tool
-class FinancialDocumentTool():
-    async def read_data_tool(path='data/TSLA-Q2-2025-Update.pdf'):
-        """Tool to read data from a pdf file from a path
+class FinancialDocumentTool:
+    @staticmethod
+    async def read_data_tool(path: str = "data/sample.pdf") -> str:
+        """Tool to read data from a PDF file from a path.
 
         Args:
-            path (str, optional): Path of the pdf file. Defaults to 'data/sample.pdf'.
+            path (str, optional): Path of the PDF file. Defaults to 'data/sample.pdf'.
 
         Returns:
-            str: Full Financial Document file
+            str: Full financial document text, cleaned and concatenated.
         """
-        
-       docs = PyPDFLoader(path).load()
-
         full_report = ""
-        for data in docs:
-            # Clean and format the financial document data
-            content = data.page_content
-            
-            # Remove extra whitespaces and format properly
-            while "\n\n" in content:
-                content = content.replace("\n\n", "\n")
-                
-            full_report += content + "\n"
-            
+        with pdfplumber.open(path) as pdf:
+            for page in pdf.pages:
+                content = page.extract_text() or ""
+
+                # Remove extra blank lines and normalize spacing
+                while "\n\n" in content:
+                    content = content.replace("\n\n", "\n")
+
+                full_report += content + "\n"
+
         return full_report
 
 ## Creating Investment Analysis Tool
