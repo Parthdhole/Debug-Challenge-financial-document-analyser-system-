@@ -1,38 +1,124 @@
-# Financial Document Analyzer - Debug Assignment
+📊 Financial Document Analyzer
 
-## Project Overview
-A comprehensive financial document analysis system that processes corporate reports, financial statements, and investment documents using AI-powered analysis agents.
+AI-powered system for analyzing corporate financial reports using local LLMs with multi-agent orchestration.
 
-## Getting Started
+Built with Ollama + CrewAI + FastAPI.
 
-### Install Required Libraries
-```sh
-pip install -r requirement.txt
-```
+🚀 Overview
 
-### Sample Document
-The system analyzes financial documents like Tesla's Q2 2025 financial update.
+Financial Document Analyzer processes corporate financial reports (PDF format) such as quarterly earnings, annual reports, and investor updates.
 
-**To add Tesla's financial document:**
-1. Download the Tesla Q2 2025 update from: https://www.tesla.com/sites/default/files/downloads/TSLA-Q2-2025-Update.pdf
-2. Save it as `data/sample.pdf` in the project directory
-3. Or upload any financial PDF through the API endpoint
+The system extracts key financial metrics, evaluates risks, and generates structured investment insights using AI agents.
 
-**Note:** Current `data/sample.pdf` is a placeholder - replace with actual Tesla financial document for proper testing.
+🏗 Architecture
+User Upload (PDF)
+        ↓
+PDF Text Extraction
+        ↓
+Text Chunking
+        ↓
+AI Financial Analyst Agent
+        ↓
+Risk Assessment
+        ↓
+Investment Recommendation
+🛠 Tech Stack
 
-# You're All Not Set!
-🐛 **Debug Mode Activated!** The project has bugs waiting to be squashed - your mission is to fix them and bring it to life.
+Python 3.10+
 
-## Debugging Instructions
+FastAPI
 
-1. **Identify the Bug**: Carefully read the code in each file and understand the expected behavior. There is a bug in each line of code. So be careful.
-2. **Fix the Bug**: Implement the necessary changes to fix the bug.
-3. **Test the Fix**: Run the project and verify that the bug is resolved.
-4. **Repeat**: Continue this process until all bugs are fixed.
+CrewAI
 
-## Expected Features
-- Upload financial documents (PDF format)
-- AI-powered financial analysis
-- Investment recommendations
-- Risk assessment
-- Market insights
+Ollama (Local LLM Runtime)
+
+PyPDF
+
+Uvicorn
+
+📦 Installation
+1️⃣ Clone Repository
+git clone https://github.com/your-username/financial-document-analyzer.git
+cd financial-document-analyzer
+2️⃣ Install Dependencies
+pip install -r requirements.txt
+🧠 Ollama Setup
+Install Ollama
+
+Download from: https://ollama.com
+
+Start Ollama Server
+ollama serve
+Pull Required Model
+ollama pull llama3
+
+You may also use:
+
+ollama pull mistral
+▶️ Running the Application
+
+Start the FastAPI server:
+
+uvicorn main:app --reload
+
+Access Swagger UI:
+
+http://127.0.0.1:8000/docs
+
+Upload a financial PDF using the /upload/ endpoint.
+
+📄 Sample Document
+
+You can test with a financial report such as Tesla’s quarterly update from:
+
+https://www.tesla.com/investor-relations
+
+Save it as:
+
+data/sample.pdf
+✅ Features
+
+Upload financial documents (PDF)
+
+Extract key financial metrics (Revenue, Net Income, EPS, Debt)
+
+AI-powered financial analysis
+
+Risk classification (Low / Medium / High)
+
+Investment recommendation (Buy / Hold / Sell)
+
+Structured analytical output
+
+📁 Project Structure
+financial-document-analyzer/
+│
+├── main.py
+├── agents.py
+├── tasks.py
+├── utils.py
+├── requirements.txt
+├── data/
+│   └── sample.pdf
+└── README.md
+⚠ Notes
+
+Ensure Ollama server is running before starting the API.
+
+Large PDFs are automatically chunked to prevent LLM context overflow.
+
+Replace the placeholder PDF with a real financial report for proper testing.
+
+🔮 Future Improvements
+
+Multi-agent financial reasoning
+
+Earnings call sentiment analysis
+
+Historical financial comparison
+
+Dashboard UI
+
+Cloud deployment
+
+Vector database integration
